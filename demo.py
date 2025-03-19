@@ -36,6 +36,16 @@ def run(cfg,
         save_pkl=False,
         visualize=False):
     
+    if osp.exists(osp.join(output_pth, "wham_output.pkl")):
+        print("Everything is done...")
+        exit()
+    # if osp.exists(osp.join(output_pth.replace("/path/to/temp_data/", "/path/to/ashutosh_data/"), "wham_output.pkl")):
+    #     print("Everything is done...")
+    #     exit()
+    # if osp.exists(osp.join(output_pth.replace("/path/to/temp_data/", "/path/to/"), "wham_output.pkl")):
+    #     print("Everything is done...")
+    #     exit()
+    
     cap = cv2.VideoCapture(video)
     assert cap.isOpened(), f'Faild to load video file {video}'
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -159,6 +169,7 @@ def run(cfg,
         pred_pose_world = np.concatenate((pred_root_world, pred_body_pose), axis=-1)
         pred_trans = (pred['trans_cam'] - network.output.offset).cpu().numpy()
         
+        results[_id]['kp3d'] = pred['kp3d']
         results[_id]['pose'] = pred_pose
         results[_id]['trans'] = pred_trans
         results[_id]['pose_world'] = pred_pose_world

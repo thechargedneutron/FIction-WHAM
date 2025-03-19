@@ -1,0 +1,6 @@
+**/__pycache__/
+dataset/
+logs/
+output/
+pkl_files/
+examples/

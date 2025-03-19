@@ -102,7 +102,8 @@ class Network(nn.Module):
             output.update({
                 'poses_root_r6d': self.pred_root,
                 'trans_cam': self.output.full_cam,
-                'poses_body': self.output.body_pose})
+                'poses_body': self.output.body_pose,
+                'kp3d': self.output.joints})
         
         return output        
     

@@ -63,6 +63,7 @@ class DetectionModel(object):
         mask = X[..., -1] > VIS_THRESH
 
         bbox = np.zeros((len(X), 3))
+        bbox_area = np.zeros((len(X), 1))
         for i, (kp, m) in enumerate(zip(X, mask)):
             bb = [kp[m, 0].min(), kp[m, 1].min(),
                   kp[m, 0].max(), kp[m, 1].max()]
@@ -72,9 +73,12 @@ class DetectionModel(object):
             s = np.stack((bb_w, bb_h)).max()
             bb = np.array((cx, cy, s))
             bbox[i] = bb
+            bbox_area[i] = bb_w * bb_h
         
         bbox[:, 2] = bbox[:, 2] * s_factor / 200.0
         self.tracking_results['bbox'] = bbox
+        self.tracking_results['bbox_area'] = bbox_area
+        self.tracking_results['bbox_mask'] = mask
     
     def track(self, img, fps, length):
         
